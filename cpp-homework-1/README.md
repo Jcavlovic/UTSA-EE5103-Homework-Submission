@@ -37,3 +37,19 @@ g++ /src/problem2.cpp -o problem2
 
 ##### <center>Output
 ![Problem 2](./data/problem2.png)
+
+### Problem 3
+##### Description
+Problem3 takes input from the user and calculates the sum and average of the numbers, and prints the numbers
+in list form to the console. The program will continue to ask for numbers until the user inputs "-1".
+
+##### How to Run
+```
+git https://github.com/Jcavlovic/UTSA-EE5103-Homework-Submission.git
+cd UTSA-EE5103-Homework-Submission/cpp-homework1
+g++ /src/problem3.cpp -o problem3
+./problem3
+```
+
+##### <center>Output
+![Problem 3](./data/problem3.png)
