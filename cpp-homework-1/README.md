@@ -35,7 +35,7 @@ g++ /src/problem2.cpp -o problem2
 ./problem2
 ```
 
-##### <center>Output
+##### Output
 ![Problem 2](./data/problem2.png)
 
 ### Problem 3
@@ -51,5 +51,23 @@ g++ /src/problem3.cpp -o problem3
 ./problem3
 ```
 
-##### <center>Output
+##### Output
 ![Problem 3](./data/problem3.png)
+
+### Problem 4
+##### Description
+Problem4 takes in 5 integers from the user and stores them into an array[5] and a vector.
+It will print to console the values store in the array and the vector as string list.
+Next it will double each value in the array and vector and print to console the double values
+in a string list.
+
+##### How to Run
+```
+git https://github.com/Jcavlovic/UTSA-EE5103-Homework-Submission.git
+cd UTSA-EE5103-Homework-Submission/cpp-homework1
+g++ /src/problem4.cpp -o problem4
+./problem4
+```
+
+##### Output
+![Problem 4](./data/problem4.png)
