@@ -71,3 +71,24 @@ g++ /src/problem4.cpp -o problem4
 
 ##### Output
 ![Problem 4](./data/problem4.png)
+
+### Problem 5
+##### Description
+Problem5 allows the user to select from the following options, 
+1 - Enter a number,
+2 - Display all enter numbers, 
+3 - Display the largest entered number,and 
+4 - Quit the program. 
+Problem5 will store the numbers into a vector and 
+process the vector depending on the selected option.
+
+##### How to Run
+```
+git https://github.com/Jcavlovic/UTSA-EE5103-Homework-Submission.git
+cd UTSA-EE5103-Homework-Submission/cpp-homework1
+g++ /src/problem5.cpp -o problem5
+./problem5
+```
+
+##### Output
+![Problem 5](./data/problem5.png)
