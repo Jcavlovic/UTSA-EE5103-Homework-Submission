@@ -81,7 +81,7 @@ class Problem1 {
         */
         avg = sum / count;
 
-        return avg;
+        return avg;w
     }
 
     void printSummary(int count, int minVal, int maxVal, double avg) {
