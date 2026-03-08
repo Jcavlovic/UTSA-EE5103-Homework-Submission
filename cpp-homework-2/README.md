@@ -18,3 +18,20 @@ g++ /src/problem1.cpp -o problem1
 
 ##### Output
 ![Problem 1](./data/problem1.png)
+
+### Problem 2
+##### Description
+Problem 2 is an inventory system for an electronic store. It allows the store
+to create objects for new items, restock items, and sell items. It will calculate
+the total value for each object and keep track of total number of different objects.
+
+##### How to Run
+```
+git https://github.com/Jcavlovic/UTSA-EE5103-Homework-Submission.git
+cd UTSA-EE5103-Homework-Submission/cpp-homework-2
+g++ /src/problem2.cpp -o problem2
+./problem2
+```
+
+##### Output
+![Problem 2  ](./data/problem2.png)
