@@ -71,3 +71,19 @@ g++ /src/problem4.cpp -o problem4
 
 ##### Output
 ![Problem 4](./data/problem4.png)
+
+### Problem 5
+##### Description
+Problem 5 reads a text file of words and outputs how many times
+each word appears, and the 5 most frequent words.
+
+##### How to Run
+```
+git https://github.com/Jcavlovic/UTSA-EE5103-Homework-Submission.git
+cd UTSA-EE5103-Homework-Submission/cpp-homework-2
+g++ /src/problem5.cpp -o problem5
+./problem5 data/problem5.txt
+```
+
+##### Output
+![Problem 5](./data/problem5.png)
