@@ -34,4 +34,21 @@ g++ /src/problem2.cpp -o problem2
 ```
 
 ##### Output
-![Problem 2  ](./data/problem2.png)
+![Problem 2](./data/problem2.png)
+
+### Problem 3
+##### Description
+Problem 3 reads lines of integers from a log file and
+outputs the average of the line, totals lines read, total valid lines,
+and total integers read.
+
+##### How to Run
+```
+git https://github.com/Jcavlovic/UTSA-EE5103-Homework-Submission.git
+cd UTSA-EE5103-Homework-Submission/cpp-homework-2
+g++ /src/problem3.cpp -o problem3
+./problem3 data/problem3.log
+```
+
+##### Output
+![Problem 3](./data/problem3.png)
