@@ -41,6 +41,7 @@ g++ /src/problem2.cpp -o problem2
 Problem 3 reads lines of integers from a log file and
 outputs the average of the line, totals lines read, total valid lines,
 and total integers read.
+AI was used to assist with this task.
 
 ##### How to Run
 ```
@@ -48,7 +49,25 @@ git https://github.com/Jcavlovic/UTSA-EE5103-Homework-Submission.git
 cd UTSA-EE5103-Homework-Submission/cpp-homework-2
 g++ /src/problem3.cpp -o problem3
 ./problem3 data/problem3.log
+AI was used to assist with this task.
 ```
 
 ##### Output
 ![Problem 3](./data/problem3.png)
+
+### Problem 4
+##### Description
+Problem 4 implements a task scheduler using a list of strings.
+It updates the scheduler, by inserting and erasing without 
+affecting the current task.
+
+##### How to Run
+```
+git https://github.com/Jcavlovic/UTSA-EE5103-Homework-Submission.git
+cd UTSA-EE5103-Homework-Submission/cpp-homework-2
+g++ /src/problem4.cpp -o problem4
+./problem4
+```
+
+##### Output
+![Problem 4](./data/problem4.png)
