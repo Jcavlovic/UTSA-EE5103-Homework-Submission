@@ -5,7 +5,7 @@
 using namespace std;
 
 void output(list<string> tasks, list<string>::iterator current) {
-        /**
+    /**
     * @brief Helper function to output data to console.
     * 
     * @param[in] list<string> tasks: list of strings of task.
