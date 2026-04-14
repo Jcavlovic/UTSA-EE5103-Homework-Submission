@@ -41,8 +41,24 @@ TextCollection is a class that manages a dynamically allocated collection of str
 git https://github.com/Jcavlovic/UTSA-EE5103-Homework-Submission.git
 cd UTSA-EE5103-Homework-Submission/cpp-homework-3
 g++ /src/problem3.cpp -o problem3
-./problem3 ./data/word_index_test.txt
+./problem3
 ```
 
 ##### Output
 ![Problem 3](./data/problem3.png)
+
+
+### Problem 4
+##### Description
+TextCollection is a class that manages a dynamically allocated collection of strings using std::shared_ptr, allowing multiple objects to safely share the same data. Changes made through one instance are reflected in all shared instances, while RAII ensures automatic memory management with no leaks.
+
+##### How to Run
+```
+git https://github.com/Jcavlovic/UTSA-EE5103-Homework-Submission.git
+cd UTSA-EE5103-Homework-Submission/cpp-homework-3
+g++ /src/problem4.cpp -o problem4
+./problem4
+```
+
+##### Output
+![Problem 4](./data/problem4.png)
