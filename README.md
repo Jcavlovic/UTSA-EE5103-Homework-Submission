@@ -12,3 +12,5 @@
 [Assignment 2](https://github.com/Jcavlovic/UTSA-EE5103-Homework-Submission/tree/main/cpp-homework-2)
 
 [Assignment 3](https://github.com/Jcavlovic/UTSA-EE5103-Homework-Submission/tree/main/cpp-homework-3)
+
+[Assignment 4](https://github.com/Jcavlovic/UTSA-EE5103-Homework-Submission/tree/main/cpp-homework-4)
