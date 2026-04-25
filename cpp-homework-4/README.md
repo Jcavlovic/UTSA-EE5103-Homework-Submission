@@ -42,3 +42,23 @@ g++ /src/problem2.cpp -o problem2
 
 ##### Output
 ![Problem 2](./data/problem2.png)
+
+  ### Problem 3
+##### Description
+ Models a small library checkout system. LibraryItem is an abstract
+ base class (it declares two pure virtual functions, lateFee and
+ clone, plus a virtual destructor) so it cannot be instantiated
+ directly. Two concrete derivatives are provided:
+  - Book : flat per-day late fee
+  - DVD  : higher per-day fee, capped at a maximum amount
+
+##### How to Run
+```
+git https://github.com/Jcavlovic/UTSA-EE5103-Homework-Submission.git
+cd UTSA-EE5103-Homework-Submission/cpp-homework-4
+g++ /src/problem3.cpp -o problem3
+./problem3
+```
+
+##### Output
+![Problem 3](./data/problem3.png)
