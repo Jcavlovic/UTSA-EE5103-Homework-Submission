@@ -62,3 +62,25 @@ g++ /src/problem3.cpp -o problem3
 
 ##### Output
 ![Problem 3](./data/problem3.png)
+
+### Problem 4
+##### Description
+ Implements SmartBuffer, a class that owns a heap-allocated array of
+ doubles and fully supports both copy and move semantics. Each
+ special member prints a diagnostic so the demonstration in main()
+ makes it obvious when an operation triggers a copy versus a move.
+ 
+ After a move, the source object's pointer is reset to nullptr and
+ its size is zeroed - it remains in a valid, destructible state but
+ no longer owns any memory.
+
+##### How to Run
+```
+git https://github.com/Jcavlovic/UTSA-EE5103-Homework-Submission.git
+cd UTSA-EE5103-Homework-Submission/cpp-homework-4
+g++ /src/problem4.cpp -o problem4
+./problem4
+```
+
+##### Output
+![Problem 4](./data/problem4.png)
