@@ -15,7 +15,7 @@ and `*` operators.
 ## Build and run
 From the `final_project/` directory:
 ```
-g++ -std=c++17 -Wall -Wextra -O2 src/*.cpp -o circuit_app
+g++ src/*.cpp -o circuit_app
 ./circuit_app
 ```
 
