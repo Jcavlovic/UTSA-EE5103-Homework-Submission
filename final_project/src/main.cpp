@@ -27,7 +27,6 @@ int main() {
     std::cout << series << "\n";
     series.analyze(std::cout, Vs);
 
-    // Parallel network built via the factory.
     Circuit parallel(Circuit::Topology::Parallel, "DC-Parallel");
     parallel.add(ComponentFactory::create("Resistor", "R4", 100.0));
     parallel.add(ComponentFactory::create("Resistor", "R5", 220.0));
@@ -35,8 +34,6 @@ int main() {
     std::cout << "\n" << parallel << "\n";
     parallel.analyze(std::cout, Vs);
 
-    // Series + parallel composition (parallel block in series with the
-    // existing series block, sharing the same source voltage).
     Circuit combined = series + parallel;
     std::cout << "\n" << combined << "\n";
     combined.analyze(std::cout, Vs);
