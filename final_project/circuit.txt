@@ -1,4 +1,0 @@
-SERIES DC-Series
-Resistor R1 100
-Resistor R2 220
-Resistor R3 470
