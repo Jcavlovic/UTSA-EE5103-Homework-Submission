@@ -3,7 +3,7 @@
 
 #include "Component.h"
 
-#include <complex>
+#include <iosfwd>
 #include <memory>
 #include <string>
 #include <vector>
@@ -16,33 +16,42 @@ public:
         : Component(std::move(label), 0.0), topology_(topology) {}
 
 
-    void add(std::unique_ptr<Component> c) { 
-        elements_.push_back(std::move(c)); 
+    void add(std::unique_ptr<Component> c) {
+        elements_.push_back(std::move(c));
     }
 
-    const std::vector<std::unique_ptr<Component>>& elements() const { 
+    const std::vector<std::unique_ptr<Component>>& elements() const {
         /** @brief Read-only access to the list of child components. */
-        return elements_; 
+        return elements_;
     }
 
-    std::size_t size() const { 
+    std::size_t size() const {
         /** @brief Number of child components. */
-        return elements_.size(); 
+        return elements_.size();
     }
 
-    Topology topology() const { 
+    Topology topology() const {
         /** @brief Wiring topology (series or parallel). */
-        return topology_; 
+        return topology_;
     }
 
-    std::complex<double> impedance(double omega) const override;
+    double resistance() const override;
     /**
-     * @brief Compute the equivalent complex impedance of the circuit.
-     * @param omega Angular frequency in rad/s.
-     * @return Sum of child impedances (series) or 1/sum(1/Z_i) (parallel).
+     * @brief Equivalent DC resistance of the circuit.
+     * @return Sum of child resistances (series) or 1/sum(1/R_i) (parallel).
      */
-    std::string type() const override { 
-        return "Circuit"; 
+
+    void analyze(std::ostream& os, double sourceVoltage, int indent = 2) const;
+    /**
+     * @brief Print a DC analysis: total R, current, per-component voltage
+     *        drop and power dissipated.
+     * @param os             Output stream.
+     * @param sourceVoltage  Source voltage applied across the circuit (V).
+     * @param indent         Leading spaces for nested sub-circuits.
+     */
+
+    std::string type() const override {
+        return "Circuit";
     }
 
     std::unique_ptr<Component> clone() const override;
