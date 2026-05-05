@@ -2,6 +2,14 @@
 
 #include <ostream>
 
+double Component::voltageDrop(double current) const {
+    return current * resistance();
+}
+
+double Component::power(double current) const {
+    return current * current * resistance();
+}
+
 void Component::print(std::ostream& os) const {
     os << type() << "(" << label_ << " = " << value_ << ")";
 }
