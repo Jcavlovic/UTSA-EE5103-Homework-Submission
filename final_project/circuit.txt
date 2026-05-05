@@ -1,4 +1,0 @@
-SERIES RLC Series
-Resistor R1 50
-Inductor L1 50
-Capacitor C1 50
