@@ -13,8 +13,9 @@ Series and parallel circuits can also be combined with the overloaded `+`
 and `*` operators.
 
 ## Build and run
-From the `final_project/` directory:
 ```
+git https://github.com/Jcavlovic/UTSA-EE5103-Homework-Submission.git
+cd UTSA-EE5103-Homework-Submission/final_project
 g++ src/*.cpp -o circuit_app
 ./circuit_app
 ```

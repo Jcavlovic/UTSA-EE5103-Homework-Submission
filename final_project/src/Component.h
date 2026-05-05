@@ -9,11 +9,6 @@
 class Component {
 public:
 Component(std::string label, double value)
-/**
- * @brief Construct a component with an identifying label and a numeric value.
- * @param label Human-readable identifier (e.g. "R1").
- * @param value Component value in SI units (ohms, henries, farads, volts).
- */
         : label_(std::move(label)), value_(value) {}
     virtual ~Component() = default;
 
@@ -50,11 +45,15 @@ Component(std::string label, double value)
       * @param os Output stream to write to.
       */
 
-      const std::string& label() const { return label_; }
-      /** @brief Get the component's label. */
+      const std::string& label() const { 
+          /** @brief Get the component's label. */
+        return label_; 
+    }
 
-      double value() const { return value_; }
-      /** @brief Get the component's numeric value in SI units. */
+      double value() const { 
+          /** @brief Get the component's numeric value in SI units. */
+        return value_; 
+    }
 
       friend std::ostream& operator<<(std::ostream& os, const Component& c);
       /** @brief Stream insertion operator; delegates to print(). */
