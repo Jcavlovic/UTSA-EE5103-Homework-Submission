@@ -1,0 +1,187 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+
+\title{EE 5103 --- Final Programming Project\\
+\large Circuit Analysis Library in C++}
+\author{Jordan Cavlovic}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Problem Description}
+
+The goal of this project is to build a small C++ library that represents
+simple DC circuits, computes their equivalent resistance, the current
+drawn from the source, the voltage drop across each component, and the
+power dissipated. The user can construct resistors, capacitors, inductors,
+and ideal voltage sources, group them into series or parallel circuits,
+combine entire circuits with the \texttt{+} and \texttt{*} operators, and
+save or load circuits as text files. At DC steady state an inductor is
+treated as a perfect wire and a capacitor as an open circuit, so the
+analysis reduces to pure resistance.
+
+Hand-computing voltage drops and dissipated power becomes tedious past a
+few elements, so a small object-oriented library is a better fit:
+each element type knows how to compute its own resistance, voltage drop,
+and power, and a container class composes them.
+
+\section{Example Run}
+
+The driver prompts the user for a source voltage $V_s$, three resistor
+values, a capacitor value $C_1$ (F), and an inductor value $L_1$ (H), then
+builds a series circuit, and reports the total resistance, the current, and
+the voltage drop and power for each element. The same source voltage is
+then applied to a parallel network and to series + parallel built with the
+\texttt{+} and \texttt{*} operators. The capacitor and inductor are added
+to both circuits so the user can see the DC steady-state behavior fall out
+of the same analysis: the capacitor is treated as an open and the inductor
+as a perfect wire, so a series network with a capacitor in it has
+$R_{total} = \infty$ and zero current, while a parallel network with an
+inductor in it shorts to $R_{total} = 0$. The resistor-only tables below
+isolate the meaningful drops and powers; the storage elements contribute
+zero voltage drop and zero dissipated power at DC.
+
+\begin{table}[h]
+\centering
+\caption{Series-circuit summary for three sample runs ($R_{total}$ is the
+sum of the three resistors}
+\begin{tabular}{@{}rrrrrrr@{}}
+\toprule
+$V_s$ & $R_1$& $R_2$& $R_3$
+& $R_{total}$& $I$& $P_{total}$\\
+\midrule
+12 & 100 & 220 & 470 & 790 & 0.01519 & 0.182 \\
+24 & 100 & 200 & 300 & 600 & 0.04000 & 0.960 \\
+ 5 &  10 &  20 &  30 &  60 & 0.08333 & 0.417 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Per-element voltage drop and dissipated power for the first run
+($V_s = 12$~V, series).}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Element & $R$& $V_{drop}$& $P$\\
+\midrule
+$R_1$ & 100 & 1.519 & 0.023 \\
+$R_2$ & 220 & 3.342 & 0.051 \\
+$R_3$ & 470 & 7.139 & 0.108 \\
+\midrule
+Total & 790 & 12.000 & 0.182 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Software Design and Class Structure}
+
+The design uses the composite pattern, which means a circuit can act like a single component. This lets us use one recursive type system to handle both individual elements and groups of elements without needing separate logic for each case.
+At the core is an abstract base class called Component. It declares a few pure virtual methods — resistance(), type(), clone(), and print() — and stores a label and value that all components share. It also provides default implementations of voltageDrop(I) and power(I) using the standard formulas V = IR and P = I²R. Subclasses only need to override these when the DC steady-state behavior is different from the basic resistor model.
+There are four classes: Resistor, Capacitor, Inductor, and VoltageSource. Each one reports its DC resistance differently — a resistor gives R, an inductor acts like a wire so its resistance 0, a capacitor acts like an open circuit so it resistance is infinity, and an ideal voltage source is also 0. Inductor, Capacitor, and Voltage Source all override voltage Drop and power to match their actual DC behavior. For example, the storage elements have zero voltage drop and don't dissipate power, while the voltage source reports negative values to show it's supplying power rather than consuming it.
+Circuit also extends Component, so it can be nested inside other circuits seamlessly. It holds a list of child components and knows whether they're connected in series or parallel. From there it calculates the total resistance, summing for series, and using the reciprocal formula for parallel. It also has an analyze() method that prints out the total resistance, applied voltage, current, and the voltage drop and power for each component. When it hits a nested sub-circuit, it uses a dynamic cast to recurse into it with the right branch voltage.
+Circuit also supports operator+ for series combinations and operator* for parallel combinations, along with save() and load() for writing and reading circuits from a text file. To keep the load function clean, a helper class called ComponentFactory handles mapping type-name strings to the right concrete objects, so Circuit doesn't need to know anything about the specific leaf classes.
+Everything gets wired together in main.cpp. Since every node in the tree exposes the same interface, client code never has to worry about whether it's dealing with a single resistor or a deeply nested sub-circuit.
+
+\section{Discussion of C++ Concepts Used}
+
+\paragraph{Inheritance and runtime polymorphism.}
+\texttt{Component} declares pure virtual methods that every concrete subclass
+has to override. \texttt{Circuit} stores its children as
+\texttt{std::unique\_ptr<Component>}, so a single virtual call figures out
+the right implementation at runtime, whether the child is a plain
+resistor or a nested sub-circuit. The base destructor is marked
+\texttt{virtual} so that deleting a derived object through a base pointer
+doesn't cause undefined behavior.
+
+\paragraph{Composite pattern.}
+Because \texttt{Circuit} itself inherits from \texttt{Component}, a
+circuit can contain other circuits. The recursion basically handles itself:
+\texttt{Circuit::resistance} just calls \texttt{resistance} on each child
+and lets virtual dispatch do the work, and \texttt{Circuit::analyze} does
+the same with \texttt{voltageDrop} and \texttt{power}.
+\texttt{analyze} also uses \texttt{dynamic\_cast} to check whether a
+child is itself a \texttt{Circuit}, so it can recurse with the right
+branch voltage. This same idea is what makes \texttt{operator+} and
+\texttt{operator*} work, they wrap clones of both operands inside a
+new series or parallel circuit.
+
+\paragraph{Smart pointers and RAII.}
+The library doesn't use any raw owning pointers. Children are stored as
+\texttt{std::unique\_ptr<Component>}, so memory is cleaned up automatically
+when the owning vector goes out of scope, and there's no ambiguity about
+who owns what. Objects are created through \texttt{std::make\_unique}. File
+handles use \texttt{std::ifstream} / \texttt{std::ofstream}, so streams
+close on their own even if something throws an exception.
+
+\paragraph{Virtual cloning.}
+Deep copies go through the virtual \texttt{clone()} method on each
+subclass, which avoids object slicing when copying a polymorphic
+container. \texttt{Circuit::clone} just recursively clones every child.
+
+\paragraph{Operator overloading.}
+\texttt{Circuit::operator+} and \texttt{Circuit::operator*} let the client
+write \texttt{series + parallel} and \texttt{parallel * parallel}, which
+mirrors the actual algebraic rules for circuits. \texttt{operator<<} is
+overloaded as a friend free function on \texttt{Component} and delegates
+to the virtual \texttt{print} method, so any node can be printed with the
+same syntax.
+
+\paragraph{Templates and the STL.}
+The implementation relies on \texttt{std::vector}, \texttt{std::unique\_ptr},
+\texttt{std::string}, \texttt{std::ifstream} / \texttt{std::ofstream}, and
+\texttt{std::numeric\_limits<double>::infinity()} to represent a
+DC-blocking capacitor. \texttt{<cmath>}'s \texttt{std::isinf} and
+\texttt{std::isfinite} are used to guard the series sum and parallel
+reciprocal so that an open branch propagates correctly without producing NaN.
+
+\paragraph{Run-time type identification.}
+\texttt{Circuit::analyze} uses \texttt{dynamic\_cast<const Circuit*>} on
+each child pointer to decide whether to recurse into a sub-circuit with
+its branch voltage; leaf components don't need the recursive call. This
+keeps the analysis working correctly at any nesting depth without having
+to add a virtual hook to the leaf interface.
+
+\paragraph{Strongly-typed enums.}
+\texttt{Circuit::Topology} is declared as \texttt{enum class}, so its
+enumerators don't pollute the surrounding scope and can't be accidentally
+converted to integers.
+
+\paragraph{Move semantics.}
+Constructors take string parameters by value and \texttt{std::move} them
+into the member. \texttt{Circuit::add} accepts a \texttt{std::unique\_ptr}
+by value and \texttt{std::move}s it into the vector, making the ownership
+transfer obvious at the call site.
+
+\paragraph{Factory pattern.}
+\texttt{ComponentFactory::create} maps a type-name string to the right
+concrete object, so \texttt{Circuit::load} doesn't need to know anything
+about the leaf classes. Adding a new component type only requires touching
+the factory and the new class itself.
+
+\paragraph{Exceptions.}
+\texttt{Circuit::save} and \texttt{Circuit::load} throw
+\texttt{std::runtime\_error} when the file can't be opened, and the
+factory throws \texttt{std::invalid\_argument} for an unknown type name,
+giving the caller a clear signal that something went wrong.
+
+\paragraph{Const correctness.}
+Methods that don't modify state are marked \texttt{const}. Read-only
+access to the child vector is exposed through a \texttt{const\&} getter,
+which stops callers from accidentally mutating the internal list while
+still allowing efficient iteration.
+
+\section{Summary}
+
+The project covers all of its functional goals of building, analyzing,
+combining, saving, and loading DC circuits, and reporting per-component
+voltage drop and power dissipation. The composite pattern keeps the data model consistent across
+all levels, smart pointers make ownership unambiguous, operator overloading
+gives the user natural algebraic syntax, and the factory keeps the loader
+decoupled from the concrete element types.
+
+\end{document}

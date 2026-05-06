@@ -2,12 +2,14 @@
 
 #include <ostream>
 
-double Component::voltageDrop(double current) const {
-    return current * resistance();
+Complex Component::voltageDrop(Complex current, double omega) const {
+    if (current == Complex(0.0, 0.0)) return Complex(0.0, 0.0);
+    return current * impedance(omega);
 }
 
-double Component::power(double current) const {
-    return current * current * resistance();
+double Component::power(Complex current, double omega) const {
+    if (current == Complex(0.0, 0.0)) return 0.0;
+    return std::norm(current) * std::real(impedance(omega));
 }
 
 void Component::print(std::ostream& os) const {
