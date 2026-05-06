@@ -49,7 +49,8 @@ int main() {
     std::cout << "\n" << parallel << "\n";
     parallel.analyze(std::cout, Vs, omega);
 
-    Circuit loaded = Circuit::load("circuit.txt");
+    series.save("circuit.txt");
+    Circuit loaded = Circuit::load("circuit_load.txt");
     std::cout << "\nReloaded from file: " << loaded << "\n";
     loaded.analyze(std::cout, Vs, omega);
 

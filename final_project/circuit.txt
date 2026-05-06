@@ -1,4 +1,6 @@
-SERIES DC-Series
+SERIES AC-Series
 Resistor R1 100
 Resistor R2 200
 Resistor R3 300
+Capacitor C1 1e-05
+Inductor L1 0.5
