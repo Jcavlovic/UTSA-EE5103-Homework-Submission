@@ -3,7 +3,7 @@
 **Student:** Jordan Cavlovic
 
 ## Overview
-A small library for building and analyzing simple DC circuits. The user can
+A small library for building and analyzing simple AC circuits. The user can
 construct resistors, capacitors, inductors, and voltage sources, combine
 them in series or parallel circuits, compute the equivalent resistance,
 the current drawn from the source, the voltage drop across each component,

@@ -9,11 +9,12 @@ public:
     Resistor(std::string label, double ohms)
         : Component(std::move(label), ohms) {}
 
-    double resistance() const override { 
-        return value_; 
+    Complex impedance(double omega) const override {
+        (void)omega;
+        return Complex(value_, 0.0);
     }
-    std::string type() const override { 
-        return "Resistor"; 
+    std::string type() const override {
+        return "Resistor";
     }
     std::unique_ptr<Component> clone() const override {
         return std::make_unique<Resistor>(label_, value_);
@@ -26,19 +27,11 @@ public:
     Capacitor(std::string label, double farads)
         : Component(std::move(label), farads) {}
 
-    double resistance() const override;
+    Complex impedance(double omega) const override;
+    // Z = 1/(j*omega*C); returns infinity at omega=0 (DC open).
 
-    double voltageDrop(double current) const override { 
-        (void)current; 
-        return 0.0; 
-    }
-    double power(double current) const override { 
-        (void)current; 
-        return 0.0; 
-    }
-
-    std::string type() const override { 
-        return "Capacitor"; 
+    std::string type() const override {
+        return "Capacitor";
     }
     std::unique_ptr<Component> clone() const override {
         return std::make_unique<Capacitor>(label_, value_);
@@ -50,18 +43,12 @@ public:
     Inductor(std::string label, double henries)
         : Component(std::move(label), henries) {}
 
-    double resistance() const override { 
-        return 0.0; 
+    Complex impedance(double omega) const override {
+        return Complex(0.0, omega * value_);
     }
-    double voltageDrop(double current) const override { 
-        (void)current; 
-        return 0.0; }
-    double power(double current) const override { 
-        (void)current; 
-        return 0.0; }
 
-    std::string type() const override { 
-        return "Inductor"; 
+    std::string type() const override {
+        return "Inductor";
     }
     std::unique_ptr<Component> clone() const override {
         return std::make_unique<Inductor>(label_, value_);
@@ -73,18 +60,21 @@ public:
     VoltageSource(std::string label, double volts)
         : Component(std::move(label), volts) {}
 
-    double resistance() const override { 
-        return 0.0; 
+    Complex impedance(double omega) const override {
+        (void)omega;
+        return Complex(0.0, 0.0);
     }
-    double voltageDrop(double current) const override { 
-        (void)current; 
-        return -value_; 
+    Complex voltageDrop(Complex current, double omega) const override {
+        (void)current;
+        (void)omega;
+        return Complex(-value_, 0.0);
     }
-    double power(double current) const override { 
-        return -value_ * current; 
+    double power(Complex current, double omega) const override {
+        (void)omega;
+        return -value_ * std::real(current);
     }
-    std::string type() const override { 
-        return "VoltageSource"; 
+    std::string type() const override {
+        return "VoltageSource";
     }
     std::unique_ptr<Component> clone() const override {
         return std::make_unique<VoltageSource>(label_, value_);

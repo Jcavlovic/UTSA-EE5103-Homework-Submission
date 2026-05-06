@@ -35,18 +35,20 @@ public:
         return topology_;
     }
 
-    double resistance() const override;
+    Complex impedance(double omega) const override;
     /**
-     * @brief Equivalent DC resistance of the circuit.
-     * @return Sum of child resistances (series) or 1/sum(1/R_i) (parallel).
+     * @brief Equivalent complex impedance of the circuit at omega.
+     * @return Sum of child impedances (series) or 1/sum(1/Z_i) (parallel).
      */
 
-    void analyze(std::ostream& os, double sourceVoltage, int indent = 2) const;
+    void analyze(std::ostream& os, double sourceVoltage, double omega, int indent = 2) const;
     /**
-     * @brief Print a DC analysis: total R, current, per-component voltage
-     *        drop and power dissipated.
+     * @brief Print an AC analysis: total impedance, phasor current,
+     *        per-component voltage drop magnitude/angle, and average real
+     *        power dissipated.
      * @param os             Output stream.
-     * @param sourceVoltage  Source voltage applied across the circuit (V).
+     * @param sourceVoltage  Source voltage magnitude (V, RMS, 0 deg).
+     * @param omega          Angular frequency in rad/s.
      * @param indent         Leading spaces for nested sub-circuits.
      */
 

@@ -1,10 +1,12 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
+#include <complex>
 #include <iosfwd>
 #include <memory>
 #include <string>
 
+using Complex = std::complex<double>;
 
 class Component {
 public:
@@ -12,25 +14,25 @@ Component(std::string label, double value)
         : label_(std::move(label)), value_(value) {}
     virtual ~Component() = default;
 
-    virtual double resistance() const = 0;
+    virtual Complex impedance(double omega) const = 0;
     /**
-     * @brief DC resistance of the component in ohms.
-     * @return 0 for an ideal wire/inductor/source, +infinity for an open
-     *         (capacitor at DC steady state), R for a resistor.
+     * @brief Complex impedance of the component at angular frequency omega.
+     * @param omega Angular frequency in rad/s.
+     * @return Z = R for a resistor, jwL for an inductor, 1/(jwC) for a
+     *         capacitor (infinity at w=0), 0 for an ideal source/wire.
      */
 
-    virtual double voltageDrop(double current) const;
+    virtual Complex voltageDrop(Complex current, double omega) const;
     /**
-     * @brief Voltage drop across the component for a given current (V = I*R).
-     * @param current Current through the component in amperes.
-     * @return Voltage drop in volts.
+     * @brief Phasor voltage drop across the component (V = I*Z).
+     * @param current Phasor current through the component (RMS).
+     * @param omega   Angular frequency in rad/s.
      */
 
-    virtual double power(double current) const;
+    virtual double power(Complex current, double omega) const;
     /**
-     * @brief Power dissipated by the component (P = I^2 * R).
-     * @param current Current through the component in amperes.
-     * @return Power in watts.
+     * @brief Average real power dissipated by the component.
+     *        For a passive element, P = |I|^2 * Re(Z) with I as RMS phasor.
      */
 
      virtual std::string type() const = 0;
@@ -45,14 +47,14 @@ Component(std::string label, double value)
       * @param os Output stream to write to.
       */
 
-      const std::string& label() const { 
+      const std::string& label() const {
           /** @brief Get the component's label. */
-        return label_; 
+        return label_;
     }
 
-      double value() const { 
+      double value() const {
           /** @brief Get the component's numeric value in SI units. */
-        return value_; 
+        return value_;
     }
 
       friend std::ostream& operator<<(std::ostream& os, const Component& c);
